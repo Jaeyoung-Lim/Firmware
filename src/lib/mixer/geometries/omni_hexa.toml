@@ -1,0 +1,45 @@
+# Generic Octacopter in X configuration
+
+[info]
+key = "omni6"
+description = "Cubic Hexa Omnicopter based on Dario (2016)"
+
+[rotor_default]
+Ct        = 1.0
+Cm        = 0.05
+
+[[rotors]]
+name      = "right"
+position  = [0.0, 1.0, 0.0]
+axis      = [-1.0, 0.0, 0.0]
+direction = "CW"
+
+[[rotors]]
+name      = "left"
+position  = [0.0, -1.0, 0.0]
+axis      = [-1.0, 0.0, 0.0]
+direction = "CCW"
+
+[[rotors]]
+name      = "front"
+position  = [1.0, 0.0, 0.0]
+axis      = [0.0, 0.0, -1.0]
+direction = "CW"
+
+[[rotors]]
+name      = "back"
+position  = [-1.0, 0.0, 0.0]
+axis      = [0.0, 1.0, -1.0]
+direction = "CCW"
+
+[[rotors]]
+name      = "top"
+position  = [0.0, 0.0, 1.0]
+axis      = [0.0, -1.0, 0.0]
+direction = "CW"
+
+[[rotors]]
+name      = "bottom"
+position  = [0.0, 0.0, -1.0]
+axis      = [0.0, -1.0, 0.0]
+direction = "CCW"
