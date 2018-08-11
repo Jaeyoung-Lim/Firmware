@@ -1,0 +1,19 @@
+Fixedwing tailsitter mixer
+============================
+
+This file defines a mixer for a Fixed Wing VTOL configutation. The vehicle is a fixed wing,
+preferably a foamy 3D plane with a single motor configutation. It has ailerons, elevator, rudder, which
+is located in the slipstream of the rotor. This mixer generates 4 PWM outputs
+on the main PWM ouput port. 
+
+M: 1
+S: 0 0  10000  10000      0 -10000  10000
+
+M: 1
+S: 0 1  -10000  -10000      0 -10000  10000
+
+M: 1
+S: 0 2  10000  10000      0 -10000  10000
+
+M: 1
+S: 0 3      0  20000 -10000 -10000  10000
