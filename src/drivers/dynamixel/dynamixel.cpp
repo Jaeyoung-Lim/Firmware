@@ -42,20 +42,26 @@
  * The angle is given via actuator control group 2, unlike most other actuators its value is not normalized.
  * All feedback from the servos is disabled to allow higher throughput when using the ttl servos.
  */
+#include <poll.h>
+
+#include <termios.h>
 
 #include <drivers/drv_hrt.h>
-#include <math.h>
-#include <poll.h>
-#include <px4_config.h>
-#include <px4_posix.h>
-#include <px4_tasks.h>
+#include <mathlib/mathlib.h>
+#include <matrix/math.hpp>
+
+#include <px4_platform_common/px4_config.h>
+// #include <px4_posix.h>
+// #include <px4_tasks.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
-#include <termios.h>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/actuator_controls.h>
 #include <unistd.h>
+#include <lib/drivers/device/Device.hpp>
+#include <systemlib/err.h>
+
 
 #include "message.h"
 
@@ -90,7 +96,7 @@ bool write_uart(const uint8_t *msg, int msg_length);
 /**
  * Sends the specified angles to the dynamixels.
  */
-bool set_angles(const float32 *angles);
+bool set_angles(const float_t *angles);
 
 /**
  * Sets up and enables torque for the dynamixels.
@@ -160,12 +166,12 @@ bool write_uart(const uint8_t *msg, int msg_length)
 	return write(_uart, msg, msg_length) != 0;
 }
 
-bool set_angles(const float32 *angles)
+bool set_angles(const float_t *angles)
 {
 	int32_t int_angles[NUM_DYNAMIXELS];
 
 	for (uint16_t i = 0; i < NUM_DYNAMIXELS; ++i) {
-		int_angles[i] = (int)(((float32)ANGLE_RES) * angles[i]);
+		int_angles[i] = (int)(((float_t)ANGLE_RES) * angles[i]);
 	}
 
 	uint8_t msg[WRITE_32_BIT_MESSAGE_SIZE];
@@ -389,12 +395,10 @@ int dynamixel_position_thread_main(int argc, char *argv[])
 	return PX4_OK;
 }
 
-__EXPORT int dynamixel_position_main(int argc, char *argv[]);
-
 /**
  * Process command line arguments and start the daemon.
  */
-int dynamixel_position_main(int argc, char *argv[])
+extern "C" int dynamixel_main(int argc, char *argv[])
 {
 	if (argc < 1) {
 		errx(1, "missing command\n%s", _commandline_usage);
